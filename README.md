@@ -68,6 +68,18 @@
 wget -O ufw-smart.sh https://raw.githubusercontent.com/imslan/ufw-smart/main/ufw-smart.sh
 ```
 
+Установка одной командой
+
+```bash
+wget -O ufw-smart.sh https://raw.githubusercontent.com/imslan/ufw-smart/main/ufw-smart.sh && chmod +x ufw-smart.sh && sudo ./ufw-smart.sh
+```
+
+Если возникнут ошибки в терминале
+
+```bash
+wget -O ufw-smart.sh https://raw.githubusercontent.com/imslan/ufw-smart/main/ufw-smart.sh && chmod +x ufw-smart.sh && sudo ./ufw-smart.sh | tr -d '\r' > ufw-smart.sh && chmod +x ufw-smart.sh && sudo ./ufw-smart.sh
+```
+
 Выдай права на запуск:
 
 ```bash
