@@ -65,7 +65,7 @@
 Скачай скрипт:
 
 ```bash
-wget -O ufw-smart.sh https://raw.githubusercontent.com/USERNAME/REPOSITORY/main/ufw-smart.sh
+wget -O ufw-smart.sh https://raw.githubusercontent.com/imslan/ufw-smart/main/ufw-smart.sh
 ```
 
 Выдай права на запуск:
