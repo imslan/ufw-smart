@@ -702,7 +702,7 @@ split_rule_line() {
 rule_looks_like_ssh() {
   local line="$1"
   local ssh_port="$2"
-  local to action from comment w
+  local to action from comment w port_list
   local found_port=0
   local -a words=()
 
@@ -728,8 +728,11 @@ rule_looks_like_ssh() {
 
   for w in "${words[@]}"; do
     if [[ "$w" =~ ^([0-9]+(:[0-9]+)?(,[0-9]+(:[0-9]+)?)*)(/(tcp|udp))?$ ]]; then
+      # Сохраняем сразу: port_list_covers внутри тоже использует =~ и перезапишет BASH_REMATCH
+      port_list="${BASH_REMATCH[1]}"
       found_port=1
-      if port_list_covers "${BASH_REMATCH[1]}" "$ssh_port" || port_list_covers "${BASH_REMATCH[1]}" 22; then
+
+      if port_list_covers "$port_list" "$ssh_port" || port_list_covers "$port_list" 22; then
         return 0
       fi
     fi
@@ -1083,7 +1086,7 @@ parse_port_entries() {
   for item in "${items[@]}"; do
     if [[ "$item" =~ ^([0-9:-]+)(/(tcp|udp|both|any))?$ ]]; then
       spec="${BASH_REMATCH[1]}"
-      proto="${BASH_REMATCH[3]}"
+      proto="${BASH_REMATCH[3]:-}"
 
       if [[ "$proto" == "any" ]]; then
         proto="both"
@@ -1578,8 +1581,9 @@ collect_rules_by_port() {
 
     for w in "${words[@]}"; do
       [[ "$w" =~ ^([0-9,:]+)(/(tcp|udp))?$ ]] || continue
+      # Сохраняем сразу, до вызова других функций с =~
       w_list="${BASH_REMATCH[1]}"
-      w_proto="${BASH_REMATCH[3]}"
+      w_proto="${BASH_REMATCH[3]:-}"
 
       if [[ "$proto" != "any" && -n "$w_proto" && "$w_proto" != "$proto" ]]; then
         continue
